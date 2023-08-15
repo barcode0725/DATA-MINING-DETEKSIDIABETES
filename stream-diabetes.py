@@ -6,24 +6,38 @@ diabetes_model = pickle.load(open('diabetes_model.sav', 'rb'))
 
 #title web
 st.title('Data Mining Prediksi Diabetes')
+
 #input
-col1,col2= st.columns(2)
-with col1:Pregnancies = st.text_input('input nilai Pregnancies')
-with col2:Glucose = st.text_input('input nilai Glucose')
-with col1:BloodPressure = st.text_input('input nilai BloodPressure')
-with col2:SkinThickness = st.text_input('input nilai SkinThickness')
-with col1:Insulin = st.text_input('input nilai Insulin')
-with col2:BMI = st.text_input('input nilai BMI')
-with col1:DiabetesPedigreeFunction = st.text_input('input nilai DiabetesPedigreeFunction')
-with col2:Age = st.text_input('input nilai Age')
+col1, col2 = st.columns(2)
+
+with col1:
+    Pregnancies = st.text_input('input nilai Pregnancies')
+    Glucose = st.text_input('input nilai Glucose')
+    BloodPressure = st.text_input('input nilai BloodPressure')
+    SkinThickness = st.text_input('input nilai SkinThickness')
+
+with col2:
+    Insulin = st.text_input('input nilai Insulin')
+    BMI = st.text_input('input nilai BMI')
+    DiabetesPedigreeFunction = st.text_input('input nilai DiabetesPedigreeFunction')
+    Age = st.text_input('input nilai Age')
+
 #prediksi
 diabetes_predict = ''
 if st.button('test prediksi diabetes'):
-    diabetes_predict = diabetes_model.predict([[Pregnancies, Glucose,BloodPressure,SkinThickness,Insulin,BMI,DiabetesPedigreeFunction,Age]])
-    if diabetes_predict[0] == 1:
-        diabetes_predict = 'diabetes'
+    # Memeriksa apakah semua input telah diisi
+    if (Pregnancies and Glucose and BloodPressure and SkinThickness and
+        Insulin and BMI and DiabetesPedigreeFunction and Age):
+        
+        diabetes_predict = diabetes_model.predict([[Pregnancies, Glucose, BloodPressure,
+                                                     SkinThickness, Insulin, BMI,
+                                                     DiabetesPedigreeFunction, Age]])
+
+        if diabetes_predict[0] == 1:
+            diabetes_predict = 'diabetes'
+        else:
+            diabetes_predict = 'no diabetes'
+
+        st.success(diabetes_predict)
     else:
-        diabetes_predict = 'no diabetes'
-
-    st.success(diabetes_predict)
-
+        st.warning('Silahkan lengkapi semua data sebelum melakukan prediksi.')
